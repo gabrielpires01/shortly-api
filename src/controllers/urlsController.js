@@ -15,4 +15,16 @@ const postShortenUrl = async(req, res) => {
 	}
 }
 
-export { postShortenUrl };
+const getShortUrl = async(req,res) => {
+	const { shortUrl } = req.params;
+
+	try {
+		const short = await connection.query(`SELECT id, short_url AS "shortURL", url FROM urls WHERE short_url = $1`, [shortUrl]);
+
+		return res.status(200).send(short.rows)
+	} catch(err) {
+		return res.status(500).send(err)
+	}
+}
+
+export { postShortenUrl, getShortUrl };
